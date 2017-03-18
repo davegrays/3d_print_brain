@@ -1,0 +1,69 @@
+======================
+====== In Linux ======
+======================
+== Generates .stl mesh file
+======================
+
+==== freesurfer ====
+## run this, where doug.nii is T1 image
+mkdir FREESURFER;recon-all -all -subjid doug -sd ./FREESURFER -i doug.nii
+
+## then go to surf directory
+mris_convert lh.pial lh.pial.stl
+mris_convert rh.pial rh.pial.stl
+mris_convert lh.white lh.white.stl
+mris_convert rh.white rh.white.stl
+
+======================
+===== In MeshLab =====
+======================
+======================
+== Downsamples mesh
+======================
+
+File → Import Mesh
+	Do rh.pial.stl and lh.pial.stl separately
+Filters → Remeshing, Simplification and Reconstruction → Quadratic Edge Collapse Decimation
+Set target number of faces to 99,999
+Click apply
+Click close
+File → Export Mesh As
+	Use .stl format
+
+======================
+==== In MeshMixer ====
+======================
+======================
+== Converts mesh into a hollow object with 2mm thickness, removes medial wall
+======================
+
+Import → .stl file
+Select → cover the subcortical medial wall, adjust brush size as needed
+	Click Edit → Discard
+Edit → Hollow (use default settings)
+	Click accept
+Select → check box for ‘Allow Back Faces’
+cover the same portion of medial wall
+	Click Edit → Discard
+Clean up any floating ‘scraps’
+Export → use .stl binary format
+
+======================
+===== In Netfabb =====
+======================
+======================
+== Stitches together inner and outer surfaces of medial wall
+======================
+
+
+Project → Open → .stl file
+Repair (red cross in the top right) → Actions → Stitch Triangles
+	Set tolerance to 10.0mm
+	Click OK
+	Click Apply Repair
+	Click Remove old part
+Part → Export Part → as STL
+	If caution window comes up, click optimize and then export
+
+Can also use netfabb to scale down dimensions
+	Part → Scale
